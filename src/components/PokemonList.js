@@ -1,51 +1,22 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  FlatList,
-  TouchableOpacity,
-} from 'react-native';
-import { withNavigation } from 'react-navigation';
-import PokemonDetails from './PokemonDetails';
+import { View, StyleSheet, FlatList } from 'react-native';
+import PokemonCard from './PokemonCard';
 
-const PokemonList = ({ results, navigation }) => {
-  if (typeof results.pokemon == 'undefined') {
-    var pokemonlist = (
+const PokemonList = ({ pokemons }) => {
+  return (
+    <View>
       <FlatList
         showsVerticalScrollIndicator={false}
-        data={results.results}
-        keyExtractor={(item) => item.name}
+        data={pokemons}
+        keyExtractor={(pokemon) => pokemon.name}
         renderItem={({ item }) => {
-          return (
-            <TouchableOpacity onPress={() => navigation.navigate('Details')}>
-              <PokemonDetails result={item} />
-            </TouchableOpacity>
-          );
+          return <PokemonCard pokemon={item} />;
         }}
       />
-    );
-  } else {
-    var { pokemon } = results;
-    var pokemonlist = (
-      <FlatList
-        showsVerticalScrollIndicator={false}
-        data={pokemon}
-        keyExtractor={(item) => item.name}
-        renderItem={({ item }) => {
-          return (
-            <TouchableOpacity>
-              <PokemonDetails result={item.pokemon} />
-            </TouchableOpacity>
-          );
-        }}
-      />
-    );
-  }
-
-  return <View>{pokemonlist}</View>;
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({});
 
-export default withNavigation(PokemonList);
+export default PokemonList;

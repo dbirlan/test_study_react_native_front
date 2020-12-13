@@ -1,26 +1,53 @@
-import React, { useState } from 'react';
-import { Text, StyleSheet } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { Text, StyleSheet, View } from 'react-native';
+import Fab from '../components/ui/Fab';
 import SearchBar from '../components/SearchBar';
 import PokemonList from '../components/PokemonList';
-import useResults from '../hooks/useResults';
+import { getPokemons } from '../services/pokemonService';
+import { withNavigation } from 'react-navigation';
 
-const SearchScreen = () => {
+const SearchScreen = ({ navigation }) => {
   const [term, setTerm] = useState('');
-  const [searchByType, pokemons, errorMessage] = useResults();
+  const [searchPokemons, setSearchPokemons] = useState(false);
+  const [pokemonsList, setPokemonsList] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
+
+  useEffect(() => {
+    console.log(getPokemons(term));
+    getPokemons(term).then(
+      (response) => {
+        setPokemonsList(response);
+        setErrorMessage(null);
+      },
+      () => {
+        setErrorMessage('Something went wrong');
+      }
+    );
+    setSearchPokemons(false);
+  }, [searchPokemons]);
 
   return (
-    <>
+    <View style={styles.container}>
       <SearchBar
         term={term}
         onTermChange={setTerm}
-        onTermSubmit={() => searchByType(term)}
+        onTermSubmit={() => {
+          setSearchPokemons(true);
+        }}
       />
-      {errorMessage ? <Text>{errorMessage}</Text> : null}
-      <PokemonList results={pokemons} />
-    </>
+      <Text>{errorMessage}</Text>
+      {pokemonsList && errorMessage === null ? (
+        <PokemonList pokemons={pokemonsList} />
+      ) : null}
+      <Fab onPress={() => navigation.navigate('Favorites')} />
+    </View>
   );
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});
 
-export default SearchScreen;
+export default withNavigation(SearchScreen);

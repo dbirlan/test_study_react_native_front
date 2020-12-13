@@ -7,13 +7,13 @@ const SearchBar = ({ term, onTermChange, onTermSubmit }) => {
     <View style={styles.backgroundStyle}>
       <Feather name="search" style={styles.iconStyle} color="black" />
       <TextInput
-        placeholder="Je cherche un type..."
+        placeholder="Search a Pokemon or a type..."
         style={styles.inputStyle}
         value={term}
         onChangeText={onTermChange}
         autoCapitalize="none"
         autoCorrect={false}
-        onEndEditing={onTermSubmit}
+        onSubmitEditing={onTermSubmit}
       />
     </View>
   );
