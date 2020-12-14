@@ -1,26 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { Text, View, Image, FlatList, TouchableOpacity } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
 import { withNavigation } from 'react-navigation';
 import usePokemonDetails from '../hooks/usePokemonDetails';
+import FavPokemonIcon from './FavPokemonIcon';
 import { capitalize } from 'lodash';
 
-const PokemonCard = ({ pokemon, navigation }) => {
-  const [
-    pokemonDetails,
-    findDetailsByName,
-    pokemonSpecies,
-    findSpeciesByName,
-  ] = usePokemonDetails();
-  const [favoritePokemon, setFavoritePokemon] = useState(false);
-  const { name } = pokemon;
+const PokemonCard = ({ name, navigation }) => {
+  const [pokemonDetails, findPokemonDetailsByName] = usePokemonDetails();
+  const [borderWidth, setBorderWidth] = useState(1);
 
   useEffect(() => {
-    findDetailsByName(name);
-    findSpeciesByName(name);
+    findPokemonDetailsByName(name);
   }, [name]);
 
-  if (!pokemonDetails || !pokemonSpecies) {
+  if (!pokemonDetails) {
     return null;
   }
 
@@ -32,18 +25,18 @@ const PokemonCard = ({ pokemon, navigation }) => {
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
-      borderColor: pokemonSpecies.color.name,
-      borderWidth: 1,
+      borderColor: pokemonDetails.color,
+      borderWidth: borderWidth,
     },
     ImageDetailsContainer: {
       flexDirection: 'row',
     },
     image: {
-      height: 150,
-      width: 150,
+      height: 120,
+      width: 120,
       marginRight: 10,
-      borderRadius: 8,
-      backgroundColor: pokemonSpecies.color.name,
+      borderRadius: 5,
+      backgroundColor: pokemonDetails.color,
     },
     Title: {
       fontWeight: 'bold',
@@ -53,9 +46,6 @@ const PokemonCard = ({ pokemon, navigation }) => {
     types: {
       marginLeft: 10,
       marginTop: 5,
-    },
-    icon: {
-      marginRight: 20,
     },
   };
 
@@ -69,57 +59,37 @@ const PokemonCard = ({ pokemon, navigation }) => {
             weight: pokemonDetails.weight,
             stats: pokemonDetails.stats,
             types: pokemonDetails.types,
-            imageFrontURL: pokemonDetails.sprites.front_default,
-            pokedexNumber: pokemonSpecies.pokedex_numbers[0].entry_number,
-            color: pokemonSpecies.color.name,
+            imageURL: pokemonDetails.imageURL,
+            pokedexNumber: pokemonDetails.pokedexNumber,
+            color: pokemonDetails.color,
           })
         }
+        onLongPress={() => {
+          borderWidth == 1 ? setBorderWidth(5) : setBorderWidth(1);
+        }}
       >
         <View style={styles.ImageDetailsContainer}>
           <Image
             source={{
-              uri: pokemonDetails.sprites.front_default,
+              uri: pokemonDetails.imageURL,
             }}
             style={styles.image}
           />
           <View style={styles.textContainer}>
             <Text style={styles.Title}>
-              {capitalize(name)} #
-              {pokemonSpecies.pokedex_numbers[0].entry_number}
+              {capitalize(name)} #{pokemonDetails.pokedexNumber}
             </Text>
-            <FlatList
-              style={styles.types}
-              showsVerticalScrollIndicator={false}
-              data={pokemonDetails.types}
-              keyExtractor={(item) => item.type.url}
-              renderItem={({ item }) => {
-                return <Text>{capitalize(item.type.name)}</Text>;
-              }}
-            />
+            <View style={styles.types}>
+              {pokemonDetails.types.map((item) => {
+                return (
+                  <Text key={item.type.name}>{capitalize(item.type.name)}</Text>
+                );
+              })}
+            </View>
           </View>
         </View>
       </TouchableOpacity>
-      <TouchableOpacity
-        onPress={() => {
-          setFavoritePokemon(!favoritePokemon);
-        }}
-      >
-        {favoritePokemon ? (
-          <MaterialIcons
-            name="favorite"
-            style={styles.icon}
-            size={36}
-            color="red"
-          />
-        ) : (
-          <MaterialIcons
-            name="favorite-border"
-            style={styles.icon}
-            size={36}
-            color="red"
-          />
-        )}
-      </TouchableOpacity>
+      <FavPokemonIcon name={name} />
     </View>
   );
 };

@@ -13,7 +13,6 @@ const SearchScreen = ({ navigation }) => {
   const [errorMessage, setErrorMessage] = useState(null);
 
   useEffect(() => {
-    console.log(getPokemons(term));
     getPokemons(term).then(
       (response) => {
         setPokemonsList(response);
@@ -39,7 +38,18 @@ const SearchScreen = ({ navigation }) => {
       {pokemonsList && errorMessage === null ? (
         <PokemonList pokemons={pokemonsList} />
       ) : null}
-      <Fab onPress={() => navigation.navigate('Favorites')} />
+      <Fab
+        onPress={() => navigation.navigate('Favorites')}
+        rightOffset={20}
+        name={'favorite'}
+        color={'pink'}
+      />
+      <Fab
+        onPress={() => navigation.navigate('Comparison')}
+        rightOffset={160}
+        name={'compare-arrows'}
+        color={'#3f51b5'}
+      />
     </View>
   );
 };
@@ -47,6 +57,7 @@ const SearchScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingBottom: 100,
   },
 });
 

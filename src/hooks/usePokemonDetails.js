@@ -3,25 +3,22 @@ import pokeapi from '../api/pokeapi';
 
 export default () => {
   const [pokemonDetails, setPokemonDetails] = useState(null);
-  const [pokemonSpecies, setPokemonSpecies] = useState(null);
 
-  const findDetailsByName = async (name) => {
+  const findPokemonDetailsByName = async (name) => {
     try {
       const response = await pokeapi.get(`/pokemon/${name}`);
-      setPokemonDetails(response.data);
-    } catch (error) {
-      console.log('Erreur :' + error);
-    }
+      const responseSpecies = await pokeapi.get(`/pokemon-species/${name}`);
+      setPokemonDetails({
+        height: response.data.height,
+        weight: response.data.height,
+        stats: response.data.stats,
+        types: response.data.types,
+        imageURL: response.data.sprites.front_default,
+        color: responseSpecies.data.color.name,
+        pokedexNumber: responseSpecies.data.pokedex_numbers[0].entry_number,
+      });
+    } catch (error) {}
   };
 
-  const findSpeciesByName = async (name) => {
-    try {
-      const response = await pokeapi.get(`/pokemon-species/${name}`);
-      setPokemonSpecies(response.data);
-    } catch (error) {
-      console.log('Erreur :' + error);
-    }
-  };
-
-  return [pokemonDetails, findDetailsByName, pokemonSpecies, findSpeciesByName];
+  return [pokemonDetails, findPokemonDetailsByName];
 };

@@ -10,7 +10,7 @@ const PokemonList = ({ pokemons }) => {
         data={pokemons}
         keyExtractor={(pokemon) => pokemon.name}
         renderItem={({ item }) => {
-          return <PokemonCard pokemon={item} />;
+          return <PokemonCard name={item.name} />;
         }}
       />
     </View>
