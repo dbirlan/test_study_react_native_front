@@ -10,7 +10,7 @@ export default () => {
       const responseSpecies = await pokeapi.get(`/pokemon-species/${name}`);
       setPokemonDetails({
         height: response.data.height,
-        weight: response.data.height,
+        weight: response.data.weight,
         stats: response.data.stats,
         types: response.data.types,
         imageURL: response.data.sprites.front_default,

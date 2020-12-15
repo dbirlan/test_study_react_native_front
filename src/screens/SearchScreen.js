@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { Text, StyleSheet, View } from 'react-native';
 import Fab from '../components/ui/Fab';
 import SearchBar from '../components/SearchBar';
 import PokemonList from '../components/PokemonList';
 import { getPokemons } from '../services/pokemonService';
-import { withNavigation } from 'react-navigation';
 
 const SearchScreen = ({ navigation }) => {
   const [term, setTerm] = useState('');
   const [searchPokemons, setSearchPokemons] = useState(false);
   const [pokemonsList, setPokemonsList] = useState(null);
+  const [selectedPokemons, setSelectedPokemons] = useState([]);
   const [errorMessage, setErrorMessage] = useState(null);
 
   useEffect(() => {
@@ -25,6 +25,20 @@ const SearchScreen = ({ navigation }) => {
     setSearchPokemons(false);
   }, [searchPokemons]);
 
+  const selectAndFormatPokemons = (pokemonName) => {
+    if (!selectedPokemons.includes(pokemonName)) {
+      let addedPokemons = selectedPokemons;
+      addedPokemons.push(pokemonName);
+      setSelectedPokemons(addedPokemons);
+    } else {
+      let filteredSelectedPokemons = selectedPokemons.filter((pokemon) => {
+        console.log(pokemon);
+        return pokemon !== pokemonName;
+      });
+      setSelectedPokemons(filteredSelectedPokemons);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <SearchBar
@@ -36,7 +50,10 @@ const SearchScreen = ({ navigation }) => {
       />
       <Text>{errorMessage}</Text>
       {pokemonsList && errorMessage === null ? (
-        <PokemonList pokemons={pokemonsList} />
+        <PokemonList
+          pokemons={pokemonsList}
+          onCardPress={selectAndFormatPokemons}
+        />
       ) : null}
       <Fab
         onPress={() => navigation.navigate('Favorites')}
@@ -45,10 +62,16 @@ const SearchScreen = ({ navigation }) => {
         color={'pink'}
       />
       <Fab
-        onPress={() => navigation.navigate('Comparison')}
+        onPress={() => {
+          console.log('io');
+          navigation.navigate('Comparison', {
+            selectedPokemonNames: selectedPokemons,
+          });
+        }}
         rightOffset={160}
         name={'compare-arrows'}
         color={'#3f51b5'}
+        // disabled={selectedPokemons.length < 2}
       />
     </View>
   );
@@ -61,4 +84,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default withNavigation(SearchScreen);
+export default SearchScreen;

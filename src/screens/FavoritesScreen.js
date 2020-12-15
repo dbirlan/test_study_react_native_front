@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, FlatList } from 'react-native';
-import PokemonCard from '../components/PokemonCard';
+import { View, StyleSheet, FlatList } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 
-const FavoritesScreen = () => {
-  var [favoritePokemons, setFavoritePokemons] = useState([]);
+import PokemonCard from '../components/PokemonCard';
 
+const FavoritesScreen = ({ navigation }) => {
+  var [favoritePokemons, setFavoritePokemons] = useState([]);
   useEffect(() => {
     AsyncStorage.getAllKeys().then((response) => {
-      console.log(response);
       setFavoritePokemons(response);
     });
   }, []);
@@ -20,7 +19,7 @@ const FavoritesScreen = () => {
         data={favoritePokemons}
         keyExtractor={(pokemon) => pokemon}
         renderItem={({ item }) => {
-          return <PokemonCard name={item.substring(3)} />;
+          return <PokemonCard name={item} />;
         }}
       />
     </View>

@@ -1,17 +1,62 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, FlatList } from 'react-native';
-import PokemonCard from '../components/PokemonCard';
-import AsyncStorage from '@react-native-community/async-storage';
+import { View, Text, StyleSheet } from 'react-native';
+import { findPokemonByName } from '../services/pokemonService';
+import PokemonStats from '../components/PokemonStats';
 
-const ComparisonScreen = () => {
-  return (
-    <View>
-      <Text>Compare Pokemon</Text>
-      <View></View>
-    </View>
-  );
+const ComparisonScreen = ({ navigation }) => {
+  const [pokemonMap, setPokemonMap] = useState(new Map());
+  const pokemonsSelected = navigation.getParam('selectedPokemonNames');
+
+  useEffect(() => {
+    for (let pokemon of pokemonsSelected) {
+      findPokemonByName(pokemon).then((response) => {
+        let pokemonDetails = response.data;
+        setPokemonMap(new Map(pokemonMap.set(pokemon, pokemonDetails)));
+      });
+    }
+  }, []);
+
+  const showPokemonMap = () => {
+    return [...pokemonMap.keys()].map((pokemonName) => {
+      let pokemon = pokemonMap.get(pokemonName);
+      return (
+        <View key={pokemon.id} style={styles.itemStyle}>
+          <Text key={pokemonName} style={styles.titleStyle}>
+            {pokemonName} #{pokemon.id}
+          </Text>
+          <PokemonStats
+            height={pokemon.height}
+            weight={pokemon.weight}
+            stats={pokemon.stats}
+            key={pokemon.stats}
+          />
+        </View>
+      );
+    });
+  };
+
+  return <View style={styles.containerStyle}>{showPokemonMap()}</View>;
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  containerStyle: {
+    flexDirection: 'row',
+  },
+  itemStyle: {
+    padding: 10,
+    borderWidth: 1,
+    borderColor: 'grey',
+    marginTop: 10,
+    marginHorizontal: 10,
+    borderRadius: 5,
+  },
+  titleStyle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    borderBottomColor: 'black',
+    borderBottomWidth: 1,
+    alignSelf: 'center',
+  },
+});
 
 export default ComparisonScreen;

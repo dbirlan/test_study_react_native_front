@@ -56,7 +56,7 @@ const PokemonStats = ({ height, weight, stats }) => {
         <MaterialCommunityIcons
           name="sword"
           size={24}
-          color="blue"
+          color="orange"
           style={styles.iconStyle}
         />
         <Text>{stats[3].base_stat}</Text>
@@ -65,7 +65,7 @@ const PokemonStats = ({ height, weight, stats }) => {
         <MaterialCommunityIcons
           name="shield"
           size={24}
-          color="blue"
+          color="orange"
           style={styles.iconStyle}
         />
         <Text>{stats[4].base_stat}</Text>
@@ -82,7 +82,6 @@ const PokemonStats = ({ height, weight, stats }) => {
     </View>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     alignContent: 'center',

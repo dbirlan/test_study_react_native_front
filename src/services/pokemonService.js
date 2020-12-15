@@ -40,3 +40,7 @@ export const getPokemons = (term) => {
     }
   );
 };
+
+export const findPokemonByName = (name) => {
+  return pokeapi.get(`/pokemon/${name}`);
+};

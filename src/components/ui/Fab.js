@@ -2,7 +2,7 @@ import React from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 
-const Fab = ({ onPress, name, rightOffset, color }) => {
+const Fab = ({ onPress, name, rightOffset, color, disabled }) => {
   const styles = StyleSheet.create({
     fab: {
       width: 80,
@@ -21,7 +21,7 @@ const Fab = ({ onPress, name, rightOffset, color }) => {
     },
   });
   return (
-    <TouchableOpacity onPress={onPress} style={styles.fab}>
+    <TouchableOpacity onPress={onPress} style={styles.fab} disabled={disabled}>
       <MaterialIcons name={name} size={40} color="black" />
     </TouchableOpacity>
   );

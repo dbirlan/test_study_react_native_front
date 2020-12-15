@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, Image, FlatList, TouchableOpacity } from 'react-native';
+import { Text, View, Image, TouchableOpacity } from 'react-native';
 import { withNavigation } from 'react-navigation';
-import usePokemonDetails from '../hooks/usePokemonDetails';
-import FavPokemonIcon from './FavPokemonIcon';
+import AsyncStorage from '@react-native-community/async-storage';
 import { capitalize } from 'lodash';
 
-const PokemonCard = ({ name, navigation }) => {
+import usePokemonDetails from '../hooks/usePokemonDetails';
+import FavPokemonIcon from './FavPokemonIcon';
+
+const PokemonCard = ({ name, navigation, onCardPress }) => {
   const [pokemonDetails, findPokemonDetailsByName] = usePokemonDetails();
   const [borderWidth, setBorderWidth] = useState(1);
 
@@ -66,6 +68,7 @@ const PokemonCard = ({ name, navigation }) => {
         }
         onLongPress={() => {
           borderWidth == 1 ? setBorderWidth(5) : setBorderWidth(1);
+          onCardPress(name);
         }}
       >
         <View style={styles.ImageDetailsContainer}>

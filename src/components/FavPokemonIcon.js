@@ -4,20 +4,20 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { MaterialIcons } from '@expo/vector-icons';
 
 const FavPokemonIcon = ({ name }) => {
-  const [storedValue, setStoredValue] = useState(false);
+  const [favoriteValue, setFavoriteValue] = useState(false);
 
   const toggleFavorite = async () => {
-    if (!storedValue) {
+    if (!favoriteValue) {
       try {
-        setStoredValue(true);
-        await AsyncStorage.setItem('FAV' + name, JSON.stringify(true));
+        setFavoriteValue(true);
+        await AsyncStorage.setItem(name, JSON.stringify(true));
       } catch (e) {
         console.log(e);
       }
     } else {
       try {
-        setStoredValue(false);
-        await AsyncStorage.removeItem('FAV' + name);
+        setFavoriteValue(false);
+        await AsyncStorage.removeItem(name);
       } catch (e) {
         console.log(e);
       }
@@ -27,8 +27,7 @@ const FavPokemonIcon = ({ name }) => {
   useEffect(() => {
     AsyncStorage.getItem(name).then((response) => {
       if (JSON.parse(response)) {
-        setStoredValue(response);
-        toggleFavorite();
+        setFavoriteValue(response);
       }
     });
   }, []);
@@ -39,7 +38,7 @@ const FavPokemonIcon = ({ name }) => {
         toggleFavorite();
       }}
     >
-      {storedValue ? (
+      {favoriteValue ? (
         <MaterialIcons
           name="favorite"
           style={styles.icon}
