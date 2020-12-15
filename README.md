@@ -1,5 +1,6 @@
 # Study Advisor - test
 ## Setup
+  - npm install --save {...allNecessaryDependies}
   - npm start
   - In the expo metro bundler, either run on Android/iOS device by scanning the QR code with the expo mobile app, or run the app in an emulator/web browser
   - Have fun !
