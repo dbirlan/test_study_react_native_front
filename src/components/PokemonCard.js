@@ -6,7 +6,7 @@ import { capitalize } from 'lodash';
 import usePokemonDetails from '../hooks/usePokemonDetails';
 import FavPokemonIcon from './FavPokemonIcon';
 
-const PokemonCard = ({ name, navigation, onCardPress }) => {
+const PokemonCard = ({ name, navigation, onCardPress, useFavIcon }) => {
   const [pokemonDetails, findPokemonDetailsByName] = usePokemonDetails();
   const [borderWidth, setBorderWidth] = useState(1);
 
@@ -91,7 +91,7 @@ const PokemonCard = ({ name, navigation, onCardPress }) => {
           </View>
         </View>
       </TouchableOpacity>
-      <FavPokemonIcon name={name} />
+      {useFavIcon ? <FavPokemonIcon name={name} /> : null}
     </View>
   );
 };

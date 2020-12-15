@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet, Image, ScrollView } from 'react-native';
 import PokemonStats from '../components/PokemonStats';
 import { findPokemonSpeciesByName } from '../services/pokemonService';
 import { capitalize } from 'lodash';
@@ -19,7 +19,6 @@ const DetailsScreen = ({ navigation }) => {
     findPokemonSpeciesByName(name).then((response) => {
       var flavorEntries = response.data.flavor_text_entries;
       for(let entry of flavorEntries) {
-        console.log(entry);
         if(entry.language.name == "en") {
           setFlavorText(entry.flavor_text);
           break;
@@ -32,15 +31,12 @@ const DetailsScreen = ({ navigation }) => {
     container: {
       alignItems: 'center',
     },
-    titleContainer: {
-      flexDirection: 'row',
-    },
     title: {
       fontSize: 20,
       fontWeight: 'bold',
       borderBottomColor: color,
       borderBottomWidth: 2,
-      textAlign: 'right',
+      textAlign: 'center',
     },
     subtitle: {
       fontSize: 18,
@@ -67,17 +63,20 @@ const DetailsScreen = ({ navigation }) => {
       borderRadius: 8,
     },
     flavorTextStyle: {
-      marginLeft: 20,
+      marginVertical: 10,
+      padding: 10,
+      borderWidth: 2,
+      borderStyle: 'dotted',
       alignSelf: 'center',
+      borderRadius: 10
     },
   });
 
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.imageContainer}>
         <Image source={{ uri: imageURL }} style={styles.image} />
       </View>
-      <View style={styles.titleContainer}>
         <View>
           <Text style={styles.title}>{capitalize(name)}</Text>
           <Text style={styles.subtitle}>#{pokedexNumber}</Text>
@@ -92,9 +91,8 @@ const DetailsScreen = ({ navigation }) => {
           </View>
         </View>
         <Text style={styles.flavorTextStyle}>{flavorText}</Text>
-      </View>
       <PokemonStats stats={stats} height={height} weight={weight} />
-    </View>
+    </ScrollView>
   );
 };
 

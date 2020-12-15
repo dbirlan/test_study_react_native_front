@@ -4,6 +4,7 @@ import Fab from '../components/ui/Fab';
 import SearchBar from '../components/SearchBar';
 import PokemonList from '../components/PokemonList';
 import { getPokemons } from '../services/pokemonService';
+import _ from 'lodash';
 
 const SearchScreen = ({ navigation }) => {
   const [term, setTerm] = useState('');
@@ -40,7 +41,7 @@ const SearchScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <SearchBar
-        term={term}
+        term={_.lowerCase(term)}
         onTermChange={setTerm}
         onTermSubmit={() => {
           setSearchPokemons(true);

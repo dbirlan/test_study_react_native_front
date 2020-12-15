@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, FlatList, Button } from 'react-native';
+import { View, FlatList } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 
 import PokemonCard from '../components/PokemonCard';
 
-const FavoritesScreen = ({ navigation }) => {
+const FavoritesScreen = () => {
   var [favoritePokemons, setFavoritePokemons] = useState([]);
   useEffect(() => {
     AsyncStorage.getAllKeys().then((response) => {
       setFavoritePokemons(response);
     });
-    navigation = navigation;
   }, []);
 
   return (
@@ -20,20 +19,11 @@ const FavoritesScreen = ({ navigation }) => {
         data={favoritePokemons}
         keyExtractor={(pokemon) => pokemon}
         renderItem={({ item }) => {
-          return <PokemonCard name={item} />;
+          return <PokemonCard name={item} useFavIcon={false} />;
         }}
       />
     </View>
   );
 };
-
-const styles = StyleSheet.create({});
-
-// FavoritesScreen.navigationOptions = {
-//   headerTitle: 'Favorite Pokemons',
-//   headerLeft: () => {
-//     return null;
-//   },
-// };
 
 export default FavoritesScreen;

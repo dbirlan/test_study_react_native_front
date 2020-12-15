@@ -32,7 +32,7 @@ export const getPokemons = (term) => {
         return response.data.forms;
       }
     },
-    // Si aucun pokemon n'est trouvé, on cherche par type
+    // Si aucun pokemon n'est trouvé en cherchant par nom, on cherche par type
     () => {
       return searchPokemonByType(term).then((typeResponse) => {
         return formatPokemonTypeData(typeResponse.data);

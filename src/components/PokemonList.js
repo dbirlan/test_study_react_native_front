@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { View, StyleSheet, FlatList } from 'react-native';
 import PokemonCard from './PokemonCard';
 
@@ -10,7 +10,7 @@ const PokemonList = ({ pokemons, onCardPress }) => {
         data={pokemons}
         keyExtractor={(pokemon) => pokemon.name}
         renderItem={({ item }) => {
-          return <PokemonCard name={item.name} onCardPress={onCardPress} />;
+          return <PokemonCard name={item.name} onCardPress={onCardPress} useFavIcon={true}/>;
         }}
       />
     </View>
