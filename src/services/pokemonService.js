@@ -44,3 +44,7 @@ export const getPokemons = (term) => {
 export const findPokemonByName = (name) => {
   return pokeapi.get(`/pokemon/${name}`);
 };
+
+export const findPokemonSpeciesByName = (name) => {
+  return pokeapi.get(`/pokemon-species/${name}`);
+};

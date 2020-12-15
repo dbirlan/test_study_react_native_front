@@ -14,10 +14,8 @@ const navigator = createStackNavigator(
   },
   {
     initialRouteName: 'Search',
-    screen: FavoritesScreen,
-    navigationOptions: {
-      title: 'Favorites',
-      headerLeft: null,
+    defaultNavigationOptions: {
+      title: 'Pokedex',
     },
   }
 );

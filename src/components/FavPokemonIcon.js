@@ -11,16 +11,12 @@ const FavPokemonIcon = ({ name }) => {
       try {
         setFavoriteValue(true);
         await AsyncStorage.setItem(name, JSON.stringify(true));
-      } catch (e) {
-        console.log(e);
-      }
+      } catch (e) {}
     } else {
       try {
         setFavoriteValue(false);
         await AsyncStorage.removeItem(name);
-      } catch (e) {
-        console.log(e);
-      }
+      } catch (e) {}
     }
   };
 

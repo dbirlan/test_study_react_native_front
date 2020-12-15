@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, FlatList } from 'react-native';
+import { View, StyleSheet, FlatList, Button } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 
 import PokemonCard from '../components/PokemonCard';
@@ -10,6 +10,7 @@ const FavoritesScreen = ({ navigation }) => {
     AsyncStorage.getAllKeys().then((response) => {
       setFavoritePokemons(response);
     });
+    navigation = navigation;
   }, []);
 
   return (
@@ -27,5 +28,12 @@ const FavoritesScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({});
+
+// FavoritesScreen.navigationOptions = {
+//   headerTitle: 'Favorite Pokemons',
+//   headerLeft: () => {
+//     return null;
+//   },
+// };
 
 export default FavoritesScreen;

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import pokeapi from '../api/pokeapi';
+import refactorColors from '../utils/refactorColors';
 
 export default () => {
   const [pokemonDetails, setPokemonDetails] = useState(null);
@@ -14,7 +15,7 @@ export default () => {
         stats: response.data.stats,
         types: response.data.types,
         imageURL: response.data.sprites.front_default,
-        color: responseSpecies.data.color.name,
+        color: refactorColors(responseSpecies.data.color.name),
         pokedexNumber: responseSpecies.data.pokedex_numbers[0].entry_number,
       });
     } catch (error) {}

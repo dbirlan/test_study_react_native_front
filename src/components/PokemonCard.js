@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Text, View, Image, TouchableOpacity } from 'react-native';
 import { withNavigation } from 'react-navigation';
-import AsyncStorage from '@react-native-community/async-storage';
 import { capitalize } from 'lodash';
 
 import usePokemonDetails from '../hooks/usePokemonDetails';

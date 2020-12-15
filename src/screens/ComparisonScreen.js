@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Image, ScrollView } from 'react-native';
 import { findPokemonByName } from '../services/pokemonService';
 import PokemonStats from '../components/PokemonStats';
 
@@ -21,6 +21,10 @@ const ComparisonScreen = ({ navigation }) => {
       let pokemon = pokemonMap.get(pokemonName);
       return (
         <View key={pokemon.id} style={styles.itemStyle}>
+          <Image
+            source={{ uri: pokemon.sprites.front_default }}
+            style={styles.imageStyle}
+          />
           <Text key={pokemonName} style={styles.titleStyle}>
             {pokemonName} #{pokemon.id}
           </Text>
@@ -35,7 +39,11 @@ const ComparisonScreen = ({ navigation }) => {
     });
   };
 
-  return <View style={styles.containerStyle}>{showPokemonMap()}</View>;
+  return (
+    <View style={styles.containerStyle}>
+      <ScrollView horizontal>{showPokemonMap()}</ScrollView>
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
@@ -49,12 +57,18 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginHorizontal: 10,
     borderRadius: 5,
+    alignContent: 'center',
   },
   titleStyle: {
     fontSize: 18,
     fontWeight: 'bold',
     borderBottomColor: 'black',
     borderBottomWidth: 1,
+    alignSelf: 'center',
+  },
+  imageStyle: {
+    height: 100,
+    width: 100,
     alignSelf: 'center',
   },
 });
